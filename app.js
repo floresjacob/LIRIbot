@@ -25,33 +25,38 @@ var  omdb_key = process.env.OMDB_API_KEY
 
 
 var params = {screen_name: 'jcbthnflrs', count: 5}
-client_Twitter.get('statuses/user_timeline', params, function(error, tweets, response) {
-  if (!error) {
-    for(i=0; i<tweets.length; i++){
-        console.log(tweets[i].text)
-    }
-  }
-  else{
-      console.log(error)
-      console.log("there's an error")
-  }
-})
 
-client_Spotify.search({ type: 'track', query: 'dancing in the moonlight' }, function(err, data) {
-    if ( !err ) {
-        console.log("spotify: " + data.tracks.items[0].name)
-    }
-    else{
-        console.log('Error occurred: ' + err)
-        return
-    }
-    // Do something with 'data' 
-})
+function callTwitter(){
+    client_Twitter.get('statuses/user_timeline', params, function(error, tweets, response) {
+        if (!error) {
+          for(i=0; i<tweets.length; i++){
+              console.log(tweets[i].text)
+          }
+        }
+        else{
+            console.log(error)
+            console.log("there's an error")
+        }
+      })
+}
+
+function callSpotify(){
+    client_Spotify.search({ type: 'track', query: 'dancing in the moonlight' }, function(err, data) {
+        if ( !err ) {
+            console.log("spotify: " + data.tracks.items[0].name)
+        }
+        else{
+            console.log('Error occurred: ' + err)
+            return
+        }
+        // Do something with 'data' 
+    })
+}
 
 function omdbCall() {
     // var title = process.argv[3]
     var title = 'avatar'
-    var omdbURL = "http://www.omdbapi.com/?apikey=ce8ac768&t=" + title
+    var omdbURL = "http://www.omdbapi.com/?apikey="+ omdb_key +"&t=" + title
 
    request(omdbURL, function(err, res, body){
        if(err){
@@ -64,5 +69,6 @@ function omdbCall() {
 }
 
 
-omdbCall()
 
+
+omdbCall()
