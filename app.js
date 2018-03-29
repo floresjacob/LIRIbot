@@ -100,10 +100,32 @@ switch(command){
     case 'spotify-this-song':
         callSpotify()
         break
-    case 'write-to-file':
+    case 'readFile':
         doIt()
         break
     default:
         console.log("the only commands are movie-this <movie>, my-tweets, spotify-this-song <song>")
 }
 
+function doIt(){
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        // console.log(data)
+        var readData = data.split(',')
+        var song = readData[0]
+        console.log(song)
+        client_Spotify.search({ type: 'track', query: song }, function(err, data) {
+            if ( !err ) {
+                console.log("Artist: " + data.tracks.items[0].artists.map(names))
+                console.log("Song: " + data.tracks.items[0].name)
+                console.log("Link: " + data.tracks.items[0].preview_url)
+                console.log("Album: " + data.tracks.items[0].album.name)
+            }
+            else{
+                console.log('Error occurred: ' + err)
+                return
+            }
+            // Do something with 'data' 
+        })
+    })
+    
+}
